@@ -7,7 +7,7 @@ var express = require('express');
 var session = require('express-session');
 var passport = require('passport');
 var saml = require('passport-saml').Strategy;
-
+var https = require('https');
 var bodyParser = require('body-parser');
 
 var userProfile;
@@ -122,4 +122,10 @@ app.post('/app/home', (req, res) => {
 	});
 });
 
-app.listen(process.env.PORT || 3000);
+var options = {
+	key: fs.readFileSync('./security/myKey.pem'),
+	cert: fs.readFileSync('./security/cert.pem')
+  };
+
+https.createServer(options, app).listen(3000);
+//app.listen(process.env.PORT || 3000);
